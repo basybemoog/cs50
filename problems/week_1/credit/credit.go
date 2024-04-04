@@ -69,7 +69,7 @@ func Validate(card_number int) string {
 			answer = "VISA"
 		} else if card_number/lenVISA2 == 4 {
 			answer = "VISA"
-		} else if card_number/lenAMEX >= 34 && card_number/lenAMEX <= 37 {
+		} else if card_number/lenAMEX == 34 || card_number/lenAMEX == 37 {
 			answer = "AMEX"
 		} else if card_number/lenMC >= 51 && card_number/lenMC <= 55 {
 			answer = "MASTERCARD"
