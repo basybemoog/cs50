@@ -14,69 +14,69 @@ func Validate(card_number int) string {
 	summchet := 0
 	summnechet := 0
 
-	var answer string
+	var answer string // название карты
 
-	var card_valid bool
+	var card_valid bool // проверка на валидность карты
 
-	length := len(strconv.Itoa(card_number))
+	length := len(strconv.Itoa(card_number)) // высчитывание длинны номера карты
 
-	for place <= length {
-		if place == 1 {
-			chastnoe = card_number % modul
-			summnechet += chastnoe
-			place++
-			modul *= mnozit
+	for place <= length { // цикл, который будет высчитывать контрольную сумму карты
+		if place == 1 { // высчитывание последнего числа номера карты
+			chastnoe = card_number % modul // деление по модулю номера карты и получение первого числа
+			summnechet += chastnoe         // прибавление к "контрольной сумме последнего числа"
+			place++                        // передвижение на следующее число в номере карты ведя отсчёт от последнего числа
+			modul *= mnozit                // увеличение значение модуля на 1
 		}
-		if place%2 == 0 {
-			chastnoe = (card_number % modul) / delitelb
-			chastnoe *= 2
-			if chastnoe > 10 {
-				chastnoe = (chastnoe % 10) + 1
-				summchet += chastnoe
-			} else if chastnoe == 10 {
-				chastnoe = 1
-				summchet += chastnoe
+		if place%2 == 0 { // условие проверяет чётный ли индекс номера карты
+			chastnoe = (card_number % modul) / delitelb // деление по модулю, а затем обычное деление, для получения чётного числа номера карты начиная с предпоследнего
+			chastnoe *= 2                               // умножение каждого чётного числа номера карты на 2
+			if chastnoe > 10 {                          // проверка прозведения чётного числа, для того, чтобы разделить на 2 отдельных значения произведение чётного числа
+				chastnoe = (chastnoe % 10) + 1 // разделение произведение на 2 отдельных числа, если оно больше 10
+				summchet += chastnoe           // присваивание суммы двух числе к сумме чётных чисел
+			} else if chastnoe == 10 { // проверяет произведение, если оно равно десяти
+				chastnoe = 1         // делит произведение чисел на числа 1 и 0, так как в сумме будут равны 1
+				summchet += chastnoe // присваивание суммы двух чисек к сумме чётных чисел
 			} else {
-				summchet += chastnoe
+				summchet += chastnoe // если произведение чётного числа из номера карты меньше 10, то он присваивает его к сумме чётных чисел
 			}
-			place++
-			modul *= mnozit
-			delitelb *= mnozit
-		} else {
-			chastnoe = (card_number % modul) / delitelb
-			summnechet += chastnoe
-			place++
-			modul *= mnozit
-			delitelb *= mnozit
+			place++            // передвижение к следующему индексу в номере карты
+			modul *= mnozit    // увеличение делителя по модулю в 10 раз
+			delitelb *= mnozit // увеличение делителя в 10 раз
+		} else { // данное условие срабатывает, если индекс карты нечётный
+			chastnoe = (card_number % modul) / delitelb // деление по модулю, а затем обычное деление, для получения нечётного числа номера карты начиная с предпоследнего
+			summnechet += chastnoe                      // присваивание итогового числа с номера карты к сумме нечётных чисел
+			place++                                     // передвижение к следующему индексу в номере карты
+			modul *= mnozit                             // увеличение делителя по модулю в 10 раз
+			delitelb *= mnozit                          // увеличение делителя в 10 раз
 		}
 	}
 
-	end_sum := summchet + summnechet
+	end_sum := summchet + summnechet //выведение "контрольной суммы", суммирует произведение чётных и нечётных чисел
 
 	if end_sum%10 == 0 {
-		card_valid = true
+		card_valid = true //если "контрольная сумма" при делении по модулю на 10 равна нулю, то карта валидная
 	} else {
 		card_valid = false
 		return "INVALID"
 	}
-	if card_valid == true {
-		lenVISA1 := 1000000000000
-		lenVISA2 := 1000000000000000
-		lenAMEX := 10000000000000
-		lenMC := 100000000000000
+	if card_valid == true { // если карта валидная, он определяет длинну данным условием
+		lenVISA1 := 1000000000000    // длина карты VISA в 13 чисел
+		lenVISA2 := 1000000000000000 // длина карты VISA в 16 чисел
+		lenAMEX := 10000000000000    // длина карты AMEX в 15 чисел
+		lenMC := 100000000000000     // длина карты MASTERCARD в 16 чисел
 
 		if card_number/lenVISA1 == 4 {
-			answer = "VISA"
+			answer = "VISA" // если при делении  на VISA1 число равно 4, то это карта VISA
 		} else if card_number/lenVISA2 == 4 {
-			answer = "VISA"
+			answer = "VISA" // если при делении на VISA2 число равно 4, то это карта VISA
 		} else if card_number/lenAMEX == 34 || card_number/lenAMEX == 37 {
-			answer = "AMEX"
+			answer = "AMEX" // если при делении на AMEX число равно 34 или 37, то это карта AMEX
 		} else if card_number/lenMC >= 51 && card_number/lenMC <= 55 {
-			answer = "MASTERCARD"
+			answer = "MASTERCARD" // если при делениии на MC число в диапазоне от 51 до 55, то это MASTERCARD
 		} else {
-			answer = "INVALID"
+			answer = "INVALID" // В иных случаях, карта не проходит аутенфикацию
 		}
 
 	}
-	return answer
+	return answer // Возвращает название карты
 }
