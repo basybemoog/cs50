@@ -1,4 +1,4 @@
-package Caesar
+package caesar
 
 import (
 	"fmt"
