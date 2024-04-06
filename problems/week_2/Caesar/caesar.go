@@ -1,23 +1,31 @@
 package caesar
 
-import (
-	"fmt"
-)
+import "strings"
 
-func Caesar(key int) string {
-	if key < 0 {
-		return "Usage: ./caesar key"
-	}
-	var plain_t []string
-	fmt.Printf("plain text: ")
-	fmt.Scanf("%s", &plain_t[0])
-	length_of_text := len(plain_t)
-	var cipher_text string
-	for i := 0; i < length_of_text; i++ {
-		if plain_t[0][i] >= 'A' && plain_t[0][i] <= 'Z' {
+func Cipher(r rune, key int) rune {
+	char := int(r) + key
+	if r >= 'a' && r <= 'z' {
 
-		} else if plain_t[0][i] >= 'a' && plain_t[0][i] <= 'z' {
-
+		if char > 'z' {
+			return rune(char - 26)
+		} else if char < 'a' {
+			return rune(char + 26)
 		}
+	} else if r >= 'A' && r <= 'Z' {
+
+		if char > 'Z' {
+			return rune(char - 26)
+		} else if char < 'A' {
+			return rune(char + 26)
+		}
+	} else {
+		return r
 	}
+	return rune(char)
+}
+func Caesar(plaintText string, key int) string {
+	chipperText := strings.Map(func(r rune) rune {
+		return Cipher(r, key)
+	}, plaintText)
+	return chipperText
 }
