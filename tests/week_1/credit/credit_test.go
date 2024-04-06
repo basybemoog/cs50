@@ -1,7 +1,7 @@
 package credit
 
 import (
-	"CS50/problems/week_1/credit/problems/week_1/credit"
+	"cs50/problems/week_1/credit"
 	"testing"
 )
 

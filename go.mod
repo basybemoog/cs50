@@ -1,3 +1,3 @@
-module CS50/problems/week_1/credit
+module cs50
 
 go 1.22.0
