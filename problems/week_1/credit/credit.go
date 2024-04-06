@@ -1,69 +1,47 @@
 package credit
 
-import (
-	"strconv"
-)
-
 func Validate(cardNum int) string {
 
-	delitelb := 10
-	modul := 10
-	place := 1
-	chastnoe := 0
-	mnozit := 10
-	summchet := 0
-	summnechet := 0
+	var cardNumReserve = cardNum
 
-	length := len(strconv.Itoa(cardNum)) // высчитывание длинны номера карты
+	answer := 0
 
-	for place <= length { // цикл, который будет высчитывать контрольную сумму карты
-		if place == 1 { // высчитывание последнего числа номера карты
-			chastnoe = cardNum % modul // деление по модулю номера карты и получение первого числа
-			summnechet += chastnoe     // прибавление к "контрольной сумме последнего числа"
-			place++                    // передвижение на следующее число в номере карты ведя отсчёт от последнего числа
-			modul *= mnozit            // увеличение значение модуля на 1
-		}
-		if place%2 == 0 { // условие проверяет чётный ли индекс номера карты
-			chastnoe = (cardNum % modul) / delitelb // деление по модулю, а затем обычное деление, для получения чётного числа номера карты начиная с предпоследнего
-			chastnoe *= 2                           // умножение каждого чётного числа номера карты на 2
-			if chastnoe > 10 {                      // проверка прозведения чётного числа, для того, чтобы разделить на 2 отдельных значения произведение чётного числа
-				chastnoe = (chastnoe % 10) + 1 // разделение произведение на 2 отдельных числа, если оно больше 10
-				summchet += chastnoe           // присваивание суммы двух числе к сумме чётных чисел
-			} else if chastnoe == 10 { // проверяет произведение, если оно равно десяти
-				chastnoe = 1         // делит произведение чисел на числа 1 и 0, так как в сумме будут равны 1
-				summchet += chastnoe // присваивание суммы двух чисек к сумме чётных чисел
+	counter := 0
+
+	for cardNum > 0 {
+		temp := cardNum % 10
+
+		if counter%2 == 0 {
+			answer += temp
+		} else {
+			temp *= 2
+
+			if temp > 9 {
+				answer += temp % 10
+				answer += temp / 10
 			} else {
-				summchet += chastnoe // если произведение чётного числа из номера карты меньше 10, то он присваивает его к сумме чётных чисел
+				answer += temp
 			}
-			place++            // передвижение к следующему индексу в номере карты
-			modul *= mnozit    // увеличение делителя по модулю в 10 раз
-			delitelb *= mnozit // увеличение делителя в 10 раз
-		} else { // данное условие срабатывает, если индекс карты нечётный
-			chastnoe = (cardNum % modul) / delitelb // деление по модулю, а затем обычное деление, для получения нечётного числа номера карты начиная с предпоследнего
-			summnechet += chastnoe                  // присваивание итогового числа с номера карты к сумме нечётных чисел
-			place++                                 // передвижение к следующему индексу в номере карты
-			modul *= mnozit                         // увеличение делителя по модулю в 10 раз
-			delitelb *= mnozit                      // увеличение делителя в 10 раз
 		}
+		counter++
+		cardNum /= 10
 	}
 
-	if (summchet+summnechet)%10 != 0 {
+	if answer%10 != 0 {
 		return "INVALID"
 	}
+
 	lenVISA1 := 1000000000000    // длина карты VISA в 13 чисел
 	lenVISA2 := 1000000000000000 // длина карты VISA в 16 чисел
 	lenAMEX := 10000000000000    // длина карты AMEX в 15 чисел
 	lenMC := 100000000000000     // длина карты MASTERCARD в 16 чисел
 
-	if cardNum/lenVISA1 == 4 {
-		return "VISA" // если при делении  на VISA1 число равно 4, то это карта VISA
-	} else if cardNum/lenVISA2 == 4 {
-		return "VISA" // если при делении на VISA2 число равно 4, то это карта VISA
-	} else if cardNum/lenAMEX == 34 || cardNum/lenAMEX == 37 {
+	if cardNumReserve/lenVISA1 == 4 || cardNumReserve/lenVISA2 == 4 {
+		return "VISA" // если при делении на VISA1 число равно 4, то это карта VISA
+	} else if cardNumReserve/lenAMEX == 34 || cardNumReserve/lenAMEX == 37 {
 		return "AMEX" // если при делении на AMEX число равно 34 или 37, то это карта AMEX
-	} else if cardNum/lenMC >= 51 && cardNum/lenMC <= 55 {
-		return "MASTERCARD" // если при делениии на MC число в диапазоне от 51 до 55, то это MASTERCARD
-	} else {
-		return "INVALID" // В иных случаях, карта не проходит аутенфикацию
+	} else if cardNumReserve/lenMC >= 51 && cardNumReserve/lenMC <= 55 {
+		return "MASTERCARD" // если при делении на MC число в диапазоне от 51 до 55, то это MASTERCARD
 	}
+	return "INVALID" // В иных случаях, карта не проходит валидацию
 }
