@@ -4,7 +4,7 @@ import (
 	"strconv"
 )
 
-func CardValid(cardNum int) string {
+func Validate(cardNum int) string {
 
 	delitelb := 10
 	modul := 10
@@ -47,26 +47,23 @@ func CardValid(cardNum int) string {
 		}
 	}
 
-	if (summchet+summnechet)%10 == 0 {
-		lenVISA1 := 1000000000000    // длина карты VISA в 13 чисел
-		lenVISA2 := 1000000000000000 // длина карты VISA в 16 чисел
-		lenAMEX := 10000000000000    // длина карты AMEX в 15 чисел
-		lenMC := 100000000000000     // длина карты MASTERCARD в 16 чисел
-
-		if cardNum/lenVISA1 == 4 {
-			return "VISA" // если при делении  на VISA1 число равно 4, то это карта VISA
-		} else if cardNum/lenVISA2 == 4 {
-			return "VISA" // если при делении на VISA2 число равно 4, то это карта VISA
-		} else if cardNum/lenAMEX == 34 || cardNum/lenAMEX == 37 {
-			return "AMEX" // если при делении на AMEX число равно 34 или 37, то это карта AMEX
-		} else if cardNum/lenMC >= 51 && cardNum/lenMC <= 55 {
-			return "MASTERCARD" // если при делениии на MC число в диапазоне от 51 до 55, то это MASTERCARD
-		} else {
-			return "INVALID" // В иных случаях, карта не проходит аутенфикацию
-		}
-	} else {
-
+	if (summchet+summnechet)%10 != 0 {
 		return "INVALID"
 	}
+	lenVISA1 := 1000000000000    // длина карты VISA в 13 чисел
+	lenVISA2 := 1000000000000000 // длина карты VISA в 16 чисел
+	lenAMEX := 10000000000000    // длина карты AMEX в 15 чисел
+	lenMC := 100000000000000     // длина карты MASTERCARD в 16 чисел
 
+	if cardNum/lenVISA1 == 4 {
+		return "VISA" // если при делении  на VISA1 число равно 4, то это карта VISA
+	} else if cardNum/lenVISA2 == 4 {
+		return "VISA" // если при делении на VISA2 число равно 4, то это карта VISA
+	} else if cardNum/lenAMEX == 34 || cardNum/lenAMEX == 37 {
+		return "AMEX" // если при делении на AMEX число равно 34 или 37, то это карта AMEX
+	} else if cardNum/lenMC >= 51 && cardNum/lenMC <= 55 {
+		return "MASTERCARD" // если при делениии на MC число в диапазоне от 51 до 55, то это MASTERCARD
+	} else {
+		return "INVALID" // В иных случаях, карта не проходит аутенфикацию
+	}
 }
