@@ -4,17 +4,16 @@ import (
 	"unicode"
 )
 
-func Scrabble(wordb1, wordb2 string) string {
+func Scrabble(word1, word2 string) string {
 
-	Player1 := summing(wordb1) // контрольная сумма от слова первого игрока
-	Player2 := summing(wordb2) // контрольная сумма от слова второга игрока
+	Player1 := summing(word1) // контрольная сумма от слова первого игрока
+	Player2 := summing(word2) // контрольная сумма от слова второга игрока
 	if Player1 > Player2 {
 		return "Player 1 wins!"
 	} else if Player2 > Player1 { // Данное условие проверяет чья контрольная сумма больше
 		return "Player 2 wins!" // Условие возвращает строку
-	} else { // В случае если контрольная сумма обоих игроков равна, она выводит "Tie!"
-		return "Tie!"
 	}
+	return "Tie!"
 }
 
 func summing(word string) int { //объявил функцию, с вводной переменной типа string, на выводе получает переменную типа int
