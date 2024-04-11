@@ -18,7 +18,7 @@ func TestSubstitution(t *testing.T) {
 		{"encrypts \"A\" as \"Z\" using ZYXWVUTSRQPONMLKJIHGFEDCBA as key", args{"ZYXWVUTSRQPONMLKJIHGFEDCBA", "A"}, "ciphertext: Z"},
 		{"encrypts \"a\" as \"z\" using ZYXWVUTSRQPONMLKJIHGFEDCBA as key", args{"ZYXWVUTSRQPONMLKJIHGFEDCBA", "a"}, "ciphertext: z"},
 		{"encrypts \"ABC\" as \"NJQ\" using NJQSUYBRXMOPFTHZVAWCGILKED as key", args{"NJQSUYBRXMOPFTHZVAWCGILKED", "ABC"}, "ciphertext: NJQ"},
-		{"encrypts \"XyZ\" as \"KeD\" using NJQSUYBRXMOPFTHZVAWCGILKED as key", args{"NJQSUYBRXMOPFTHZVAWCGILKED", "XyZ"}, "ciphertext KeD"},
+		{"encrypts \"XyZ\" as \"KeD\" using NJQSUYBRXMOPFTHZVAWCGILKED as key", args{"NJQSUYBRXMOPFTHZVAWCGILKED", "XyZ"}, "ciphertext: KeD"},
 		{"encrypts \"This is CS50\" as \"Cbah ah KH50\" using YUKFRNLBAVMWZTEOGXHCIPJSQD as key", args{"YUKFRNLBAVMWZTEOGXHCIPJSQD", "This is CS50"}, "ciphertext: Cbah ah KH50"},
 		{"encrypts \"This is CS50\" as \"Cbah ah KH50\" using yukfrnlbavmwzteogxhcipjsqd as key", args{"yukfrnlbavmwzteogxhcipjsqd", "This is CS50"}, "ciphertext: Cbah ah KH50"},
 		{"encrypts \"This is CS50\" as \"Cbah ah KH50\" using YUKFRNLBAVMWZteogxhcipjsqd as key", args{"YUKFRNLBAVMWZteogxhcipjsqd", "This is CS50"}, "ciphertext: Cbah ah KH50"},
