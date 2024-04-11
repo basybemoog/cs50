@@ -20,7 +20,7 @@ func TestCaesar(t *testing.T) {
 		{"encrypts \"BARFOO\" as \"EDUIRR\" using 3 as key", args{"BARFOO", 3}, "ciphertext: EDUIRR"},
 		{"encrypts \"BaRFoo\" as \"FeVJss\" using 4 as key", args{"BaRFoo", 4}, "ciphertext: FeVJss"},
 		{"encrypts \"barfoo\" as \"onesbb\" using 65 as key", args{"barfoo", 65}, "ciphertext: onesbb"},
-		{"encrypts \"world, say hello!\" as \"iadxp, emk tqxxa!\" using 12 as key", args{"world, say hello!", 12}, "ciphertext: iadxp"},
+		{"encrypts \"world, say hello!\" as \"iadxp, emk tqxxa!\" using 12 as key", args{"world, say hello!", 12}, "ciphertext: iadxp, emk tqxxa!"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

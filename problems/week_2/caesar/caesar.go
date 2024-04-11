@@ -24,7 +24,10 @@ func Cipher(r rune, key int) rune {
 	return rune(char)
 }
 func Caesar(plaintText string, key int) string {
-	chipperText := strings.Map(func(r rune) rune {
+	for key > 26 {
+		key -= 26
+	}
+	chipperText := "ciphertext: " + strings.Map(func(r rune) rune {
 		return Cipher(r, key)
 	}, plaintText)
 	return chipperText
