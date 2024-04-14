@@ -2,7 +2,6 @@ package runoff
 
 import (
 	"fmt"
-	"strings"
 )
 
 const maxVoters = 100
@@ -21,7 +20,7 @@ var candidates [maxCandidates]candidate
 var voterCounter int
 var candidateCounter int
 
-func Runoff(argc int, argv []string) string {
+func Runoff(argc int, voterCounter int, argv []string) string {
 	if argc < 2 {
 		return "Usage: runoff [candidate ...]"
 	}
@@ -39,10 +38,11 @@ func Runoff(argc int, argv []string) string {
 		return "Maximum number of voters is 100"
 	}
 	for i := 0; i < voterCounter; i++ {
-		for j := 0; j < candidateCounter; j++ {
+
+		for j := 0; j <= candidateCounter; j++ {
 			var name string
-			fmt.Printf("Rank: %d", j+1)
-			fmt.Scanf("%s", &name)
+			fmt.Printf("Rank %d: ", j+1)
+			fmt.Scan(&name)
 
 			if !vote(i, j, name) {
 				return "Invalid vote."
@@ -63,7 +63,7 @@ func Runoff(argc int, argv []string) string {
 		if tie {
 			for i := 0; i < candidateCounter; i++ {
 				if !candidates[i].eliminated {
-					fmt.Printf("%s\n", candidates[i].name)
+					return candidates[i].name
 				}
 			}
 			break
@@ -74,13 +74,12 @@ func Runoff(argc int, argv []string) string {
 			candidates[i].votes = 0
 		}
 	}
-	return "hello"
+	return ""
 }
 
 func vote(voter, rank int, name string) bool {
-
-	for i := 0; i < voter; i++ {
-		if strings.Compare(candidates[i].name, name) == 0 {
+	for i := 0; i < candidateCounter; i++ {
+		if candidates[i].name == name {
 			prefences[voter][rank] = i
 			return true
 		}
@@ -88,13 +87,25 @@ func vote(voter, rank int, name string) bool {
 	return false
 }
 func tabulate() {
+	for i := 0; i < candidateCounter; i++ {
+		for j := 0; i < voterCounter; j++ {
+			indexOfCandidate := prefences[i][j]
+
+			if !candidates[indexOfCandidate].eliminated {
+				candidates[indexOfCandidate].votes++
+				break
+			}
+		}
+
+	}
 
 	return
 }
 func printWinner() bool {
 	moreOfHalf := voterCounter/2 + 1
 	for i := 0; i < voterCounter; i++ {
-		if candidates[i].votes > moreOfHalf && !candidates[i].eliminated {
+		if candidates[i].votes >= moreOfHalf && !candidates[i].eliminated {
+			fmt.Printf("%s", candidates[i].name)
 			return true
 		}
 	}
@@ -119,6 +130,12 @@ func isTie(min int) bool {
 	return false
 }
 func eliminate(min int) {
+	for i := 0; i < candidateCounter; i++ {
+		if candidates[i].votes == min && !candidates[i].eliminated {
+			candidates[i].eliminated = true
+			break
 
+		}
+	}
 	return
 }
