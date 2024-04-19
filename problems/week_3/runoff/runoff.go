@@ -20,17 +20,18 @@ var candidates [maxCandidates]candidate
 var voterCounter int
 var candidateCounter int
 
-func Runoff(argc int, voterCounter int, argv []string) string {
-	if argc < 2 {
+func Runoff(candidatesCount int, voterCounter int, argv []string) string {
+
+	if candidatesCount < 2 {
 		return "Usage: runoff [candidate ...]"
 	}
+	candidateCounter = candidatesCount
 
-	candidateCounter = argc - 1
 	if candidateCounter > maxCandidates {
 		return "Maximum number of candidates is 9"
 	}
 	for i := 0; i < candidateCounter; i++ {
-		candidates[i].name = argv[i+1]
+		candidates[i].name = argv[i]
 		candidates[i].votes = 0
 		candidates[i].eliminated = false
 	}
@@ -39,7 +40,7 @@ func Runoff(argc int, voterCounter int, argv []string) string {
 	}
 	for i := 0; i < voterCounter; i++ {
 
-		for j := 0; j <= candidateCounter; j++ {
+		for j := 0; j < candidateCounter; j++ {
 			var name string
 			fmt.Printf("Rank %d: ", j+1)
 			fmt.Scan(&name)
@@ -78,33 +79,33 @@ func Runoff(argc int, voterCounter int, argv []string) string {
 }
 
 func vote(voter, rank int, name string) bool {
+
 	for i := 0; i < candidateCounter; i++ {
 		if candidates[i].name == name {
 			prefences[voter][rank] = i
+
 			return true
 		}
 	}
+
 	return false
 }
 func tabulate() {
-	for i := 0; i < candidateCounter; i++ {
-		for j := 0; i < voterCounter; j++ {
-			indexOfCandidate := prefences[i][j]
-
-			if !candidates[indexOfCandidate].eliminated {
-				candidates[indexOfCandidate].votes++
+	for i := 0; i < voterCounter; i++ {
+		for j := 0; j < candidateCounter; j++ {
+			if candidates[prefences[j][i]].eliminated == false {
+				candidates[prefences[j][i]].votes++
 				break
 			}
 		}
-
 	}
-
 	return
 }
+
 func printWinner() bool {
-	moreOfHalf := voterCounter/2 + 1
+	majority := voterCounter/2 + 1
 	for i := 0; i < voterCounter; i++ {
-		if candidates[i].votes >= moreOfHalf && !candidates[i].eliminated {
+		if candidates[i].votes >= majority && candidates[i].eliminated == false {
 			fmt.Printf("%s", candidates[i].name)
 			return true
 		}
@@ -114,7 +115,7 @@ func printWinner() bool {
 func findMin() int {
 	minVote := 0
 	for i := 0; i < candidateCounter; i++ {
-		if candidates[i].votes < minVote && !candidates[i].eliminated {
+		if candidates[i].votes < minVote && candidates[i].eliminated == false {
 			minVote = candidates[i].votes
 		}
 
@@ -123,7 +124,7 @@ func findMin() int {
 }
 func isTie(min int) bool {
 	for i := 0; i < candidateCounter; i++ {
-		if candidates[i].votes == min && candidates[i].eliminated {
+		if candidates[i].votes == min && candidates[i].eliminated == false {
 			return true
 		}
 	}
@@ -131,10 +132,9 @@ func isTie(min int) bool {
 }
 func eliminate(min int) {
 	for i := 0; i < candidateCounter; i++ {
-		if candidates[i].votes == min && !candidates[i].eliminated {
+		if candidates[i].votes == min && candidates[i].eliminated == false {
 			candidates[i].eliminated = true
 			break
-
 		}
 	}
 	return
