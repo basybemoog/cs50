@@ -1,0 +1,11 @@
+sort1 uses: bubble
+
+How do you know?: Longest time release
+
+sort2 uses: merge
+
+How do you know?: shortest time release
+
+sort3 uses: selection
+
+How do you know?: i'm just understand that
