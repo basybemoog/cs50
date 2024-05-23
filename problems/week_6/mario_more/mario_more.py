@@ -1,8 +1,10 @@
 def main():
     value = height()
-    conter =value
-    for up in range(1,conter+1):
-        print(" "* (value-up)+"#" * up + "  " + "#"* up)
+    conter = value
+    for up in range(1, conter + 1):
+        print(" " * (value - up) + "#" * up + "  " + "#" * up)
+
+
 def height():
     while True:
         try:
@@ -11,5 +13,6 @@ def height():
                 return var
         except ValueError:
             print("Not an integer")
+
 
 main()
