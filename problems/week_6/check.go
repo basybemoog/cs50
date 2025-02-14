@@ -1,4 +1,4 @@
-package problems
+package week_6
 
 func longestCommonPrefix(strs []string) string {
 	var output string
